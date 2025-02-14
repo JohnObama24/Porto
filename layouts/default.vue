@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-coklat h-screen">
+  <div class="bg-coklat h-screen w-full">
     <Navbar></Navbar>
     <slot></slot>
   </div>

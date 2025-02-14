@@ -1,6 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&family=Sofia&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 @import "tailwindcss";
 
 
 @theme {
     --color-coklat: #f1e9de;
+    --font-display: "Indie Flower", "sans-serif"; 
+    --font-second: "Jacquard 12", "sans-serif"; 
+    --font-third: "Sofia", "sans-serif";
+    --font-fourth: "Mansalva", "sans-serif";
+    --font-fifth: "Pixelify Sans", "sans-serif";
   }
+
