@@ -3,60 +3,90 @@
     <div class="max-w-7xl mx-auto flex w-full items-center justify-between ">
       <div class="text-black  text-2xl font-bold">OBAMA</div>
       <ul class="flex gap-10">
-        <li
-          v-for="(item, index) in menuItems"
-          :key="index"
-          class="relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"
-          @mouseenter="onEnter(index)"
-          @mouseleave="onLeave(index)"
-        >
-          <span ref="mainText" class="block relative">{{ item.label }}</span>
-          <span ref="hoverText" class="absolute top-full left-0 w-full">{{ item.hoverText }}</span>
-        </li>
+      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>Home</span></li>
+      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>About</span></li>
+      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>Project</span></li>
+      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>More</span></li>
       </ul>
-    </div>
-    <div class="border border-black w-5/6 ">
-
     </div>
   </nav>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
-import gsap from "gsap";
+<script lang="js" setup>
+import { onMounted } from "vue";
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
 
-const menuItems = ref([
-  { label: "Home", hoverText: "Here" },
-  { label: "About", hoverText: "who Iam" },
-  { label: "Services", hoverText: "What We Do" },
-  { label: "Project", hoverText: "Look" },
-  { label: "Contact", hoverText: "Get in Touch" },
-]);
+gsap.registerPlugin(SplitText);
 
-const mainText = ref([]);
-const hoverText = ref([]);
+function HoverNav() {
+  const elementHover = document.querySelectorAll(".nav-item");
 
-const onEnter = (index) => {
-  gsap.to(mainText.value[index], { y: "-100%", duration: 0.5, ease: "power2.out", opacity: 0});
-  gsap.to(hoverText.value[index], { y: "-100%", duration: 0.5, ease: "power2.out", opacity: 1 });
-};
+  elementHover.forEach((element) => {
+    const original = element.querySelector("span");
+    const clonedText = original.cloneNode(true);
+    element.appendChild(clonedText);
 
-const onLeave = (index) => {
-  gsap.to(mainText.value[index], { y: "0%", duration: 0.5, ease: "power2.out", opacity: 1 });
-  gsap.to(hoverText.value[index], { y: "0%", duration: 0.5, ease: "power2.out", opacity: 0 });
-};
+    gsap.set(clonedText, {
+      position: "absolute",
+      top: 0,
+      left: 0
+    });
+
+    const OriSplit = new SplitText(original, { type: "chars" });
+    const CloneSplit = new SplitText(clonedText, { type: "chars" });
+
+    gsap.set(CloneSplit.chars, {
+      rotationX: -20,
+      opacity: 0,
+      transformOrigin: "50% 50% -50",
+    });
+
+    const stagger = { each: 0.02, ease: "power2", from: "start" };
+
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to(OriSplit.chars, {
+      duration: 0.4,
+      rotationX: 30,
+      transformOrigin: "50% 50% -50",
+      stagger: stagger
+    });
+
+    tl.to(OriSplit.chars, {
+      duration: 0.2,
+      opacity: 0,
+      stagger: stagger,
+      ease: "power4.in"
+    }, 0);
+
+    tl.to(CloneSplit.chars, {
+      duration: 0.05,
+      opacity: 1,
+      stagger: stagger,
+    }, 0.001);
+
+    tl.to(CloneSplit.chars, {
+      duration: 0.4,
+      rotationX: 0,
+      stagger: stagger,
+    }, 0);
+
+    element.addEventListener("mouseenter", () => {
+      tl.restart();
+    });
+
+    element.addEventListener("mouseleave", () => {
+      tl.reverse();
+    });
+  });
+}
 
 onMounted(() => {
-  menuItems.value.forEach((_, index) => {
-    gsap.set(hoverText.value[index], { opacity: 0, y: "100%" });
-  });
+  HoverNav();
 });
-
 </script>
 
+
 <style scoped>
-li {
-  height: 30px;
-  /* overflow: hidden; */
-}
 </style>
