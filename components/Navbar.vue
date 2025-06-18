@@ -1,13 +1,30 @@
 <template>
-  <nav class="w-full h-20 p-4 flex flex-col items-center justify-center">
-    <div class="max-w-7xl mx-auto flex w-full items-center justify-between ">
-      <div class="text-black  text-2xl font-bold">OBAMA</div>
-      <ul class="flex gap-10">
-      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>Home</span></li>
-      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>About</span></li>
-      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>Project</span></li>
-      <li class="nav-item relative cursor-pointer flex items-center text-black text-lg font-semibold w-fit"><span>More</span></li>
+  <nav class="w-full h-20 px-4 py-20  flex flex-col items-center justify-center fixed">
+    <div class="max-w-7xl mx-auto flex w-full items-center justify-between">
+      <div class="text-black text-2xl font-bold">OBAMA</div>
+      <ul class="flex gap-4" v-if="!isScrool">
+        <li
+          class="nav-item relative rotate-90 cursor-pointer flex items-center  text-black font-semibold w-fit"
+        >
+          <span>Home</span>
+        </li>
+        <li
+          class="nav-item relative rotate-90 cursor-pointer flex items-center  text-black font-semibold w-fit"
+        >
+          <span>About</span>
+        </li>
+        <li
+          class="nav-item relative rotate-90 cursor-pointer flex items-center  text-black font-semibold w-fit"
+        >
+          <span>Project</span>
+        </li>
+        <li
+          class="nav-item relative rotate-90 cursor-pointer flex items-center  text-black font-semibold w-fit"
+        >
+          <span>More</span>
+        </li>
       </ul>
+      <button v-if="isScrool">Menu</button>
     </div>
   </nav>
 </template>
@@ -16,6 +33,8 @@
 import { onMounted } from "vue";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
+
+const isScrool = ref(false)
 
 gsap.registerPlugin(SplitText);
 
@@ -42,14 +61,14 @@ function HoverNav() {
       transformOrigin: "50% 50% -50",
     });
 
-    const stagger = { each: 0.02, ease: "power2", from: "start" };
+    const stagger = { each: 0.05, ease: "power2", from: "start" };
 
     const tl = gsap.timeline({ paused: true });
 
     tl.to(OriSplit.chars, {
-      duration: 0.4,
+      duration: 0.5,
       rotationX: 30,
-      transformOrigin: "50% 50% -50",
+      transformOrigin: "50% 50% -45",
       stagger: stagger
     });
 
@@ -57,7 +76,7 @@ function HoverNav() {
       duration: 0.2,
       opacity: 0,
       stagger: stagger,
-      ease: "power4.in"
+      ease: "power3.in"
     }, 0);
 
     tl.to(CloneSplit.chars, {
@@ -82,11 +101,16 @@ function HoverNav() {
   });
 }
 
+const HandleScroll = () => {
+  isScrool.value = window.scrollY > 10
+}
+
+
 onMounted(() => {
   HoverNav();
+
+  window.addEventListener('scroll', HandleScroll);
 });
 </script>
 
-
-<style scoped>
-</style>
+<style scoped></style>

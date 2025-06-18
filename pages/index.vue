@@ -101,7 +101,7 @@ onMounted(() => {
 
 
 <template>
-  <main class="w-full flex flex-col gap-40 justify-center h-auto">
+  <main class="w-full flex flex-col gap-40 justify-center h-screen">
     <div ref="textContainer" class="text-7xl  text-center break-words whitespace-normal ">
        <span v-for="(letter, index) in text.split('')" :key="index" class="letter text-wrap font-display">
      {{ letter === ' ' ? '\u00A0' : letter }}
@@ -123,6 +123,10 @@ onMounted(() => {
  
 
   </main>
+
+  <div class="h-screen">
+
+  </div>
   
 </template>
 
